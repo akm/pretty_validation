@@ -6,7 +6,7 @@ module PrettyValidation
       def inherited(kls)
         super(kls)
         begin
-          kls.include "#{kls}Validation".constantize if kls.superclass == ::ActiveRecord::Base
+          kls.include "#{kls}Validation".constantize if kls.ancestors.include?(::ActiveRecord::Base)
         rescue NameError
           # nothing
         end
