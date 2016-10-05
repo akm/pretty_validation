@@ -13,13 +13,17 @@ module PrettyValidation
       columns.map do |column|
         options = {}
         options[:presence] = true unless column.null
+
         case column.type
         when :integer
           options[:numericality] = true
           options[:allow_nil] = true if column.null
         when :boolean
-          options[:commented] = true unless options.empty?
+          options.delete(:presence)
+          options[:inclusion] = [true, false]
+          options[:allow_nil] = true if column.null
         end
+
         Validation.new('validates', column.name.to_sym, options) if options.present?
       end.compact
     end
@@ -56,11 +60,11 @@ module PrettyValidation
     end
 
     def to_s
-      commented = options ? options.delete(:commented) : false
-      r = "#{method_name} #{column_name.inspect}"
-      r << ", #{options.to_s}" unless options.blank?
-      r = "# #{r}" if commented
-      return r
+      if options.blank?
+        "#{method_name} #{column_name.inspect}"
+      else
+        "#{method_name} #{column_name.inspect}, #{options.to_s}"
+      end
     end
   end
 end
