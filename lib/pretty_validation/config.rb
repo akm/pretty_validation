@@ -13,5 +13,6 @@ module PrettyValidation
     config_accessor(:auto_generate) { false }
     config_accessor(:auto_injection) { true }
     config_accessor(:ignored_columns) { [] }
+    config_accessor(:ignored_tables) { [] }
   end
 end
