@@ -7,6 +7,7 @@ module PrettyValidation
     attr_reader :method_name, :column_name, :options
 
     def self.sexy_validations(table_name)
+      return [] if PrettyValidation.config.ignored_tables.include?(table_name)
       columns = Schema.columns(table_name)
       columns = columns.reject { |x| x.name.in? %w(id created_at updated_at) }
 
@@ -30,6 +31,7 @@ module PrettyValidation
     end
 
     def self.unique_validations(table_name)
+      return [] if PrettyValidation.config.ignored_tables.include?(table_name)
       Schema.indexes(table_name).select(&:unique).reverse.map do |x|
         column_name = x.columns[0]
         scope = x.columns[1..-1].map(&:to_sym)
