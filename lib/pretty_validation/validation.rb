@@ -42,12 +42,14 @@ module PrettyValidation
                   end
 
         columns = Schema.columns(table_name)
+        string_exp = "%s.%s" % [table_name, x.columns.join('_')]
+        next if PrettyValidation.config.ignored_uniqueness.include?(string_exp)
         if x.columns.any?{|colname| col = columns.detect{|c| c.name == colname}; col.null }
           options ||= {}
           options[:allow_nil] = true
         end
         Validation.new('validates_uniqueness_of', column_name.to_sym, options)
-      end
+      end.compact
     end
 
     def initialize(method_name, column_name, options = nil)

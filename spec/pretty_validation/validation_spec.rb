@@ -39,6 +39,11 @@ module PrettyValidation
       it { is_expected.to include build('validates_uniqueness_of', :name) }
       it { is_expected.to include build('validates_uniqueness_of', :name, scope: :age, allow_nil: true) }
       it { is_expected.to include build('validates_uniqueness_of', :name, scope: [:age, :admin], allow_nil: true) }
+
+      context 'uniqueness is ignored' do
+        before{ allow(PrettyValidation.config).to receive(:ignored_uniqueness).and_return(['users.name_age_admin']) }
+        it { expect(subject.length).to eq 2 }
+      end
     end
 
     describe '#to_s' do
