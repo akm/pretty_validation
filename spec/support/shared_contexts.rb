@@ -1,5 +1,5 @@
 shared_context 'add_column' do |column, type, options = {}|
-  klass = Class.new(ActiveRecord::Migration) do
+  klass = Class.new(ActiveRecord::Migration[4.2]) do
     class_eval <<-EOF
       def self.up
         add_column :users, #{column.inspect}, #{type.inspect}, #{options.inspect}
@@ -15,7 +15,7 @@ shared_context 'add_column' do |column, type, options = {}|
 end
 
 shared_context 'add_index' do |column, options = {}|
-  klass = Class.new(ActiveRecord::Migration) do
+  klass = Class.new(ActiveRecord::Migration[4.2]) do
     class_eval <<-EOF
       def self.up
         add_index :users, #{column.inspect}, #{options.inspect}
