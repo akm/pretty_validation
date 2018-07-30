@@ -13,7 +13,7 @@ end
 FakeApp::Application.initialize!
 
 # migrations
-class CreateAllTables < ActiveRecord::Migration
+class CreateAllTables < ActiveRecord::Migration[4.2]
   def self.up
     # schema_migrations
     create_table ActiveRecord::SchemaMigration.table_name do |t|
