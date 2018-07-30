@@ -4,9 +4,9 @@ module PrettyValidation
   describe Validation do
     describe '.sexy_validations' do
       context 'column is {null: false}' do
-        include_context 'add_column', :name, :string, null: false, default: ''
+        include_context 'add_column', :name, :string, null: false, default: '', limit: 255
         subject { Validation.sexy_validations('users') }
-        it { is_expected.to include build('validates', :name, presence: true) }
+        it { is_expected.to include build('validates', :name, presence: true, length: {maximum: 255}) }
       end
 
       context 'column type is nullable integer' do
